@@ -10,6 +10,8 @@ package zad1;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class Finder {
 
@@ -24,7 +26,7 @@ public class Finder {
             }
             in.close();
 
-            this.hMap = countFrequencies(stringList);
+//            this.hMap = countFrequencies(stringList);
 
         } catch (FileNotFoundException e) {
             e.printStackTrace();
@@ -33,32 +35,52 @@ public class Finder {
 
 
     public int getIfCount() {
+        int counter = 0;
+        Pattern p = Pattern.compile("(?:^|\\}\\s*else)\\s+if",Pattern.MULTILINE);
 
+        boolean b = false;
+        //zakładamy że nie ma więcej niż jednego if'a w linii
+        for (String s: this.stringList) {
+            if (s.startsWith("//"))
+                continue;
+            if (s.contains("/*")||b) //niezbyt ładnie ale raczej działa
+            {
+                b=true;
+                if (s.endsWith("*/"))
+                {
+                    b=false;
+                    continue;
+                }else continue;
+            }else {
+                Matcher m = p.matcher(s);
+                if (m.find()) {
+                    counter++;
+                }
+            }
+        }
 
-        return hMap.get("if");
+        return counter;
     }
 
     public int getStringCount(String str) {
-        return hMap.get(str);
-    }
+        int counter = 0;
+        boolean b = false;
+        for (String s: stringList
+             ) {
+            if (s.startsWith("//"))
+                continue;
+            if (s.contains("/*")||b) //niezbyt ładnie ale raczej działa
+            {
+                b=true;
+                if (s.endsWith("*/"))
+                {
+                    b=false;
+                    continue;
+                }else continue;
+            }else if (s.contains("wariant"))
+                counter++;
 
-    private Map<String, Integer> countFrequencies(ArrayList<String> list)
-    {
-        // hashmap to store the frequency of element
-        Map<String, Integer> hm = new HashMap<String, Integer>();
-
-        for (String i : list) {
-            Integer j = hm.get(i);
-            hm.put(i, (j == null) ? 1 : j + 1);
         }
-
-       /* // displaying the occurrence of elements in the arraylist
-        for (Map.Entry<String, Integer> val : hm.entrySet()) {
-            System.out.println("Element " + val.getKey() + " "
-                    + "occurs"
-                    + ": " + val.getValue() + " times");
-        }*/
-
-        return hm;
+        return counter;
     }
 }
