@@ -25,9 +25,6 @@ public class Finder {
                 stringList.add(in.nextLine());
             }
             in.close();
-
-//            this.hMap = countFrequencies(stringList);
-
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
@@ -58,7 +55,6 @@ public class Finder {
                 }
             }
         }
-
         return counter;
     }
 
