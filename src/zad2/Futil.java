@@ -1,11 +1,9 @@
 package zad2;
 
-import java.io.File;
 import java.io.IOException;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.*;
-import java.nio.file.attribute.BasicFileAttributes;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -33,13 +31,11 @@ public class Futil {
             try {
                 List<String> temp = Files.readAllLines(p, charset);
                 Files.write(outputFile, temp, charset, StandardOpenOption.CREATE, StandardOpenOption.APPEND);
-                System.out.println("File "+ p + " processed.");
+                //System.out.println("File "+ p + " processed.");
             } catch (IOException e) {
                 e.printStackTrace();
             }
         }
-
-
     }
 
     public static List<String> getAllFiles(Path path){
